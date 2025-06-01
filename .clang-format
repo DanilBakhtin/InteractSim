@@ -1,0 +1,5 @@
+Language: Cpp
+BasedOnStyle: Microsoft
+AccessModifierOffset: '-4'
+SortIncludes: false
+PointerAlignment: Left
