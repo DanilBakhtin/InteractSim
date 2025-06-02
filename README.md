@@ -11,7 +11,12 @@ Unreal Engine 5.5.4
 - [Билд](https://drive.google.com/file/d/1nb3KNNU7Y-6CtSmM4Vg2JWbIizFC8o7U/view?usp=sharing) 
 
 # Видео
-https://youtu.be/krs_aaHtaIc
+<video width="320" height="240" controls>
+  <source src="https://youtu.be/krs_aaHtaIc" type="video/mp4">
+</video>
+
+[![Видео](https://img.youtube.com/vi/krs_aaHtaIc/0.jpg)](https://youtu.be/krs_aaHtaIc)
+
 
 # Где хранится файл, с информацией об объектах для билда?
 - ...\AppData\Local\InteractSim\Saved\ObjectsData.txt
