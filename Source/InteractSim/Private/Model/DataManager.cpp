@@ -15,9 +15,9 @@ bool UDataManager::LoadFromJSON(const FString& FilePath)
 
     if (!FFileHelper::LoadFileToString(JsonString, *FullPath))
     {
-        //UE_LOG(LogTemp, Error, TEXT("Не удалось загрузить файл JSON: %s"), *FullPath);
-        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
-                                         FString::Printf(TEXT("Failed to upload JSON file: %s"), *FullPath));
+        UE_LOG(LogTemp, Error, TEXT("Не удалось загрузить файл JSON: %s"), *FullPath);
+        /*GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
+                                         FString::Printf(TEXT("Failed to upload JSON file: %s"), *FullPath));*/
         return false;
     }
 
@@ -26,39 +26,36 @@ bool UDataManager::LoadFromJSON(const FString& FilePath)
 
     if (!FJsonSerializer::Deserialize(Reader, RootObject) || !RootObject.IsValid())
     {
-        // UE_LOG(LogTemp, Error, TEXT("Ошибка парсинга JSON: %s"), *FullPath);
-        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
-                                         FString::Printf(TEXT("JSON parsing error: %s"), *FullPath));
+        UE_LOG(LogTemp, Error, TEXT("Ошибка парсинга JSON: %s"), *FullPath);
+        /*GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
+                                         FString::Printf(TEXT("JSON parsing error: %s"), *FullPath));*/
         return false;
     }
 
     const TArray<TSharedPtr<FJsonValue>>* JsonArray;
     if (!RootObject->TryGetArrayField(TEXT("objects"), JsonArray))
     {
-        // UE_LOG(LogTemp, Error, TEXT("Поле 'objects' не найдено в JSON."));
-        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
-                                         TEXT("The 'objects' field was not found in JSON."));
+        UE_LOG(LogTemp, Error, TEXT("Поле 'objects' не найдено в JSON."));
+        /*GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
+                                         TEXT("The 'objects' field was not found in JSON."));*/
         return false;
     }
 
     ObjectStates.Empty();
     for (const TSharedPtr<FJsonValue>& Value : *JsonArray)
     {
-        FObjectData Data;
-        if (FJsonObjectConverter::JsonObjectToUStruct(Value->AsObject().ToSharedRef(), &Data))
+        TSharedPtr<FObjectData> Data = MakeShared<FObjectData>();
+        if (FJsonObjectConverter::JsonObjectToUStruct(Value->AsObject().ToSharedRef(), Data.Get()))
         {
             ObjectStates.Add(Data);
         }
-        else
-            GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Red,
-                                             TEXT("Error parse object."));
     }
 
-    // UE_LOG(LogTemp, Log, TEXT("Успешно загружено %d объектов из JSON."), ObjectStates.Num());
+    UE_LOG(LogTemp, Log, TEXT("Успешно загружено %d объектов из JSON."), ObjectStates.Num());
 
-    GEngine->AddOnScreenDebugMessage(
+    /*GEngine->AddOnScreenDebugMessage(
         INDEX_NONE, 10.0f, FColor::Green,
-        FString::Printf(TEXT("Successfully loaded %d objects from JSON"), ObjectStates.Num()));
+        FString::Printf(TEXT("Successfully loaded %d objects from JSON"), ObjectStates.Num()));*/
     return true;
 }
 
@@ -67,9 +64,9 @@ bool UDataManager::SaveToJSON(const FString& FilePath)
     TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject);
 
     TArray<TSharedPtr<FJsonValue>> JsonArray;
-    for (const FObjectData& Data : ObjectStates)
+    for (const TSharedPtr<FObjectData>& Data : ObjectStates)
     {
-        TSharedPtr<FJsonObject> JsonObject = FJsonObjectConverter::UStructToJsonObject(Data);
+        TSharedPtr<FJsonObject> JsonObject = FJsonObjectConverter::UStructToJsonObject(*Data);
         JsonArray.Add(MakeShareable(new FJsonValueObject(JsonObject)));
     }
 
@@ -91,19 +88,8 @@ bool UDataManager::SaveToJSON(const FString& FilePath)
     }
 
     UE_LOG(LogTemp, Log, TEXT("Успешно сохранено %d объектов в файл: %s"), ObjectStates.Num(), *FullPath);
-    GEngine->AddOnScreenDebugMessage(
+    /*GEngine->AddOnScreenDebugMessage(
         INDEX_NONE, 10.0f, FColor::Green,
-        FString::Printf(TEXT("Successfully saved %d objects to a file: %s"), ObjectStates.Num(), *FullPath));
+        FString::Printf(TEXT("Successfully saved %d objects to a file: %s"), ObjectStates.Num(), *FullPath));*/
     return true;
-}
-
-void UDataManager::UpdateData(const FObjectData& Data)
-{
-    for (int i = 0; i < ObjectStates.Num(); i++)
-    {
-        if (ObjectStates[i].Id == Data.Id)
-        {
-            ObjectStates[i] = Data;
-        }
-    }
 }

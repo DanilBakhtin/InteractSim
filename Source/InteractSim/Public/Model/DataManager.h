@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Templates/SharedPointer.h"
 #include "DataManager.generated.h"
 
+//Типы объектов (для выбора меша)
 UENUM(BlueprintType)
 enum class EObjectType : uint8
 {
@@ -14,6 +16,8 @@ enum class EObjectType : uint8
     Unknown UMETA(DisplayName = "Unknown")
 };
 
+
+//Структура для храниния информации об объекте
 USTRUCT(BlueprintType)
 struct FObjectData
 {
@@ -59,13 +63,13 @@ class INTERACTSIM_API UDataManager : public UObject
     GENERATED_BODY()
 
 public:
-    UPROPERTY() TArray<FObjectData> ObjectStates;
+    
+    TArray<TSharedPtr<FObjectData>> ObjectStates;
 
-    /** Загрузка JSON из файла */
+    /* Загрузка JSON из файла*/
     bool LoadFromJSON(const FString& FilePath);
 
-    /** Сохранение JSON в файл */
+    /* Сохранение JSON в файл*/
     bool SaveToJSON(const FString& FilePath);
 
-    void UpdateData(const FObjectData& Data);
 };

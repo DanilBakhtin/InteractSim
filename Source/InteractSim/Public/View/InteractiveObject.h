@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include <Model/InteractiveObjectState.h>
-#include <Model/DataManager.h>
+#include "Templates/SharedPointer.h"
+#include "Model/DataManager.h"
 #include "InteractiveObject.generated.h"
 
 class UObjectState;
@@ -16,31 +16,34 @@ class INTERACTSIM_API AInteractiveObject : public AActor
     GENERATED_BODY()
 
 public:
-    AInteractiveObject();
 
-    virtual void Tick(float DeltaTime) override;
-    virtual void BeginPlay() override;
-
-    FObjectData Interact();
-    bool GetActiveState();
-
-    void InitializeFromData(const FObjectData& Data);
-
-private:
-
-    void ChangeColorObject();
-
-    void InitializeStaticMesh();
-
-public:
     UPROPERTY(VisibleAnywhere)
     UStaticMeshComponent* MeshComponent;
 
-private:
+    AInteractiveObject();
+
+    /*Взаимодействие с объектом, инвертируем состояние и меняем цвет*/
+    void Interact();
+
+    /*Получение текушего состояния*/
+    bool GetActiveState();
+
+    /*Инициализация состояния объекта*/
+    void InitializeFromData(TSharedPtr<FObjectData> Data);
+    
+protected:
+
+    //Динамический материал для смены цвета
     UPROPERTY()
     UMaterialInstanceDynamic* DynMaterial;
 
-    UPROPERTY()
-    FObjectData ObjectState;
+    //Ссылка на состояние
+    TSharedPtr<FObjectData> ObjectState;
+
+    /*Смена цвета в материале*/
+    void ChangeColorObject();
+
+    /*Инициализация меша. Лучше вынести в DataTable (тип-меш)я*/
+    void InitializeStaticMesh();
 
 };

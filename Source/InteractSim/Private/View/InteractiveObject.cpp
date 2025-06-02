@@ -10,28 +10,6 @@ AInteractiveObject::AInteractiveObject()
 
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
     RootComponent = MeshComponent;
-
-    /*static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Game/Meshes/SM_Cube"));
-    if (MeshAsset.Succeeded())
-    {
-        MeshComponent->SetStaticMesh(MeshAsset.Object);
-        MeshComponent->SetCollisionObjectType(ECC_GameTraceChannel1);
-
-        UMaterialInterface* Material = MeshComponent->GetMaterial(0);
-        if (Material)
-            DynMaterial = UMaterialInstanceDynamic::Create(Material, this);
-
-        if (DynMaterial)
-            MeshComponent->SetMaterial(0, DynMaterial);
-    }*/
-}
-
-// Called when the game starts or when spawned
-void AInteractiveObject::BeginPlay()
-{
-    Super::BeginPlay();
-
-    // ChangeColorObject();
 }
 
 void AInteractiveObject::ChangeColorObject()
@@ -39,7 +17,7 @@ void AInteractiveObject::ChangeColorObject()
     if (DynMaterial)
     {
         {
-            FColor Color = ObjectState.GetColor();
+            FColor Color = ObjectState->GetColor();
             FVector LinearColorVector = FVector(Color.R / 255.0f, Color.G / 255.0f, Color.B / 255.0f);
             DynMaterial->SetVectorParameterValue("BaseColor", FLinearColor(LinearColorVector));
         }
@@ -50,7 +28,7 @@ void AInteractiveObject::InitializeStaticMesh()
 {
     FString PathToMesh;
 
-    switch (ObjectState.ObjectType)
+    switch (ObjectState->ObjectType)
     {
     case EObjectType::Box:
         PathToMesh = TEXT("/Game/Meshes/SM_Cube.SM_Cube");
@@ -82,27 +60,21 @@ void AInteractiveObject::InitializeStaticMesh()
     }
 }
 
-void AInteractiveObject::Tick(float DeltaTime)
+void AInteractiveObject::Interact()
 {
-    Super::Tick(DeltaTime);
-}
-
-FObjectData AInteractiveObject::Interact()
-{
-    ObjectState.bIsActive = !ObjectState.bIsActive;
+    ObjectState->bIsActive = !ObjectState->bIsActive;
     ChangeColorObject();
-
-    return ObjectState;
 }
 
 bool AInteractiveObject::GetActiveState()
 {
-    return ObjectState.bIsActive;
+    return ObjectState.IsValid() ? ObjectState->bIsActive : false;
 }
 
-void AInteractiveObject::InitializeFromData(const FObjectData& Data)
+void AInteractiveObject::InitializeFromData(TSharedPtr<FObjectData> Data)
 {
-    // Инициализируем объект состояния
+    if (!Data)
+        return;
     ObjectState = Data;
     
     InitializeStaticMesh();

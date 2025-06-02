@@ -15,21 +15,23 @@ class INTERACTSIM_API UHUDWidget : public UUserWidget
     GENERATED_BODY()
 
 public:
+
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void HideAllText();
-
+    
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void ShowActivateText(bool bActivate);
 
+    /*Обновление информации об объектах в UI*/
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void UpdateInfoObjects(const TArray<FObjectData>& ObjectStates);
 
-    // Динамическое событие, которое можно вызывать из Blueprint и подписываться на него
+    // Динамическое событие нажатия кнопки "завершить сессию" 
     UPROPERTY(BlueprintAssignable, Category = "HUD Widget")
-    FHUDWidgetEventSignature OnHUDClickCloseSession; // Без параметров
+    FHUDWidgetEventSignature OnHUDClickCloseSession;
 
 protected:
-    // Функция для вызова события (можно вызвать из Blueprint)
+    // Функция для вызова события, вызывается в WBP_HUDWidget
     UFUNCTION(BlueprintCallable, Category = "HUD Widget")
     void TriggerCloseSessionEvent();
 };

@@ -104,18 +104,25 @@ protected:
 
     virtual void Tick(float DeltaTime) override;
 
+    /*Инициализация виджета*/
     virtual void InitializingWidget();
 
+    /*Обновление текста в UI (активировать/деактировать)*/
     virtual void UpdateWidgetText();
 
+    /*Обновление информации об объектах в UI*/
     virtual void UpdateWidgetInfoObjects();
 
+    /*Загрузка информации из json файла*/
     void LoadInteractiveObjectsFromFile();
 
-    void SpawnInteractiveObjects(TArray<FObjectData>& ObjectStates);
+    /*Спавн объектов из json файла*/
+    void SpawnInteractiveObjects(TArray<TSharedPtr<FObjectData>> ObjectStates);
 
+    /*Смена видимости курсора*/
     void ChangeCursorVisabilty();
 
+    /*Сохранение информации об объектах и закрытие программы*/
     UFUNCTION()
     void CloseGame();
 };

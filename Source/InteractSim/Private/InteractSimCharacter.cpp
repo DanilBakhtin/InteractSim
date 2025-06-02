@@ -205,10 +205,19 @@ void AInteractSimCharacter::UpdateWidgetText()
 
 void AInteractSimCharacter::UpdateWidgetInfoObjects()
 {
-    if (!InteractionWidget)
+    if (!InteractionWidget || !dataManager)
         return;
 
-    InteractionWidget->UpdateInfoObjects(dataManager->ObjectStates);
+    TArray<FObjectData> RawDataArray;
+    for (const TSharedPtr<FObjectData>& Ptr : dataManager->ObjectStates)
+    {
+        if (Ptr.IsValid())
+        {
+            RawDataArray.Add(*Ptr);
+        }
+    }
+
+    InteractionWidget->UpdateInfoObjects(RawDataArray);
 }
 
 void AInteractSimCharacter::LoadInteractiveObjectsFromFile()
@@ -224,20 +233,20 @@ void AInteractSimCharacter::LoadInteractiveObjectsFromFile()
     
 }
 
-void AInteractSimCharacter::SpawnInteractiveObjects(TArray<FObjectData>& ObjectStates)
+void AInteractSimCharacter::SpawnInteractiveObjects(TArray<TSharedPtr<FObjectData>> ObjectStates)
 {
     UWorld* World = GetWorld();
     if (!World)
         return;
 
-    for (const FObjectData& Data : ObjectStates)
+    for (const TSharedPtr<FObjectData>& Data : ObjectStates)
     {
         //GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.0f, FColor::Green, Data.ToString());
 
         FActorSpawnParameters SpawnParams;
         SpawnParams.Owner = this;
 
-        FVector Location = Data.Position;
+        FVector Location = Data->Position;
         FRotator Rotation = FRotator::ZeroRotator;
 
         AInteractiveObject* NewObj =
@@ -325,9 +334,8 @@ void AInteractSimCharacter::InteractWithInteractiveObject()
 {
     if (CurrentInteractiveObject)
     {   
-        dataManager->UpdateData(CurrentInteractiveObject->Interact());
+        CurrentInteractiveObject->Interact();
         UpdateWidgetText();
         UpdateWidgetInfoObjects();
-        //dataManager->SaveToJSON(*PathToData);
     }
 }
