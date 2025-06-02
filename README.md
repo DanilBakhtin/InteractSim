@@ -10,6 +10,9 @@ Unreal Engine 5.5.4
 - [Описание](https://docs.google.com/document/d/1IbnPaxUEzTso-ZRoLhm0oE1LNnQm3aNKJEnPLvQn8HE/edit?usp=sharing)
 - [Билд](https://drive.google.com/file/d/1nb3KNNU7Y-6CtSmM4Vg2JWbIizFC8o7U/view?usp=sharing) 
 
+# Видео
+https://youtu.be/krs_aaHtaIc
+
 # Где хранится файл, с информацией об объектах для билда?
 - ...\AppData\Local\InteractSim\Saved\ObjectsData.txt
 
