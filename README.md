@@ -2,9 +2,9 @@
 Unreal Engine 5.5.4
 
 # Управление
-WASD - передвижение
-E - взаимодействие
-Q - показать/скрыть курсор мыши
+- WASD - передвижение
+- E - взаимодействие
+- Q - показать/скрыть курсор мыши
 
 # Ссыкли
 - [Описание](https://docs.google.com/document/d/1IbnPaxUEzTso-ZRoLhm0oE1LNnQm3aNKJEnPLvQn8HE/edit?usp=sharing)
