@@ -36,8 +36,9 @@ struct FObjectData
     UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"))
     EObjectType ObjectType;
 
-    // Нужно для FJsonObjectConverter
-    FObjectData() : Id(0), Position(FVector::ZeroVector), Color("green"), bIsActive(false)
+    FObjectData()
+        : Id(0), Position(FVector::ZeroVector), Color("green"), bIsActive(false),
+          ObjectType(EObjectType::Unknown)
     {
     }
 
@@ -72,4 +73,6 @@ public:
     /* Сохранение JSON в файл*/
     bool SaveToJSON(const FString& FilePath);
 
+protected:
+    FString GetUniversalSavePath(const FString& FilePath) const;
 };

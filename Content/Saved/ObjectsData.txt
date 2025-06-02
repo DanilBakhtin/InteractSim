@@ -1,0 +1,43 @@
+{
+	"objects": [
+		{
+			"id": 1,
+			"name": "Box1",
+			"position":
+			{
+				"x": 1150,
+				"y": 2050,
+				"z": 200
+			},
+			"color": "red",
+			"bIsActive": true,
+			"objectType": "Box"
+		},
+		{
+			"id": 2,
+			"name": "Sphere2",
+			"position":
+			{
+				"x": 550,
+				"y": 2050,
+				"z": 200
+			},
+			"color": "blue",
+			"bIsActive": true,
+			"objectType": "Sphere"
+		},
+		{
+			"id": 3,
+			"name": "Sphere3",
+			"position":
+			{
+				"x": 1150,
+				"y": 2050,
+				"z": 0
+			},
+			"color": "blue",
+			"bIsActive": false,
+			"objectType": "Sphere"
+		}
+	]
+}

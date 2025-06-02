@@ -1,6 +1,7 @@
 // CopyRight: (c) Danil Bakhtin. All rights reserved
 
 #include "View/InteractiveObject.h"
+#include <Engine/StreamableManager.h>
 
 // Sets default values
 AInteractiveObject::AInteractiveObject()
@@ -26,18 +27,18 @@ void AInteractiveObject::ChangeColorObject()
 
 void AInteractiveObject::InitializeStaticMesh()
 {
-    FString PathToMesh;
+    FString PathToMesh = TEXT("/Game/Meshes/SM_Cube");
 
     switch (ObjectState->ObjectType)
     {
     case EObjectType::Box:
-        PathToMesh = TEXT("/Game/Meshes/SM_Cube.SM_Cube");
+        PathToMesh = TEXT("/Game/Meshes/SM_Cube");
         break;
     case EObjectType::Sphere:
-        PathToMesh = TEXT("/Game/Meshes/SM_Sphere.SM_Sphere");
+        PathToMesh = TEXT("/Game/Meshes/SM_Sphere");
         break;
     default:
-        return;
+        break;
     }
 
     // Загрузить меш во время выполнения
@@ -76,7 +77,7 @@ void AInteractiveObject::InitializeFromData(TSharedPtr<FObjectData> Data)
     if (!Data)
         return;
     ObjectState = Data;
-    
+
     InitializeStaticMesh();
     ChangeColorObject();
 }
