@@ -6,7 +6,7 @@ Unreal Engine 5.5.4
 - E - взаимодействие
 - Q - показать/скрыть курсор мыши
 
-# Ссыкли
+# Ссылки
 - [Описание](https://docs.google.com/document/d/1IbnPaxUEzTso-ZRoLhm0oE1LNnQm3aNKJEnPLvQn8HE/edit?usp=sharing)
 - [Билд](https://drive.google.com/file/d/1nb3KNNU7Y-6CtSmM4Vg2JWbIizFC8o7U/view?usp=sharing) 
 
